@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belen 2024</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        .header {
+            margin: 0;
+        }
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+            animation: rotateLogo 2s ease-in-out infinite alternate;
+        }
+        h1 {
+            font-size: 36px;
+            color: #4a4e69;
+            margin: 10px 0;
+        }
+        h3 {
+            font-size: 18px;
+            color: #9a8c98;
+            margin: 5px 0 20px;
+        }
+        .divider {
+            width: 80%;
+            height: 4px;
+            background-color: #4a4e69;
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .buttons button {
+            padding: 10px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 25px;
+            color: #ffffff;
+            background-color: #4a4e69;
+            transition: transform 0.2s ease, background-color 0.3s;
+        }
+        .buttons button:hover {
+            background-color: #22223b;
+            transform: scale(1.05);
+        }
+        .canvas-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        #drawingCanvas {
+            border: 2px solid #4a4e69;
+            border-radius: 10px;
+        }
+        .canvas-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .video-container {
+            display: none;
+            margin-top: 20px;
+        }
+        #video {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            border: 2px solid #4a4e69;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <img src="cruz1.png" alt="Logo" class="logo">
+            <h1>Belen 2024</h1>
+            <h3>"He aquí donde está nuestro salvador"</h3>
+        </div>
+        
+        <!-- Divider Line -->
+        <div class="divider"></div>
+        
+        <!-- Main Buttons -->
+        <div class="buttons">
+            <button onclick="showCanvas()">Dibujar</button>
+            <button onclick="startCamera()">Imitar</button>
+        </div>
+        
+        <!-- Canvas Container -->
+        <div class="canvas-container" id="canvasContainer">
+            <canvas id="drawingCanvas" width="400" height="400"></canvas>
+            <div class="canvas-actions">
+                <button class="clear-button" onclick="clearCanvas()">Borrar</button>
+                <button class="send-button" onclick="sendDrawing()">Enviar</button>
+            </div>
+        </div>
+        
+        <!-- Video Container -->
+        <div class="video-container" id="videoContainer">
+            <video id="video" autoplay></video>
+        </div>
+        
+        <!-- Image Section -->
+        <div class="image-container">
+            <img src="Belen.png" alt="Imagen Principal" class="main-image">
+        </div>
+    </div>
+
+    <script>
+        // Mostrar el canvas para dibujar
+        function showCanvas() {
+            document.getElementById('canvasContainer').style.display = 'block';
+        }
+
+        // Funcionalidad del lienzo
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        function startDrawing(e) {
+            isDrawing = true;
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX, e.offsetY);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.strokeStyle = '#4a4e69';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.closePath();
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function sendDrawing() {
+            alert('Dibujo enviado');
+        }
+
+        // Iniciar cámara y mostrar video
+        function startCamera() {
+            const videoContainer = document.getElementById('videoContainer');
+            const video = document.getElementById('video');
+
+            videoContainer.style.display = 'block';
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    video.srcObject = stream;
+                })
+                .catch((error) => {
+                    alert("No se pudo acceder a la cámara: " + error);
+                });
+        }
+    </script>
+</body>
+</html>
